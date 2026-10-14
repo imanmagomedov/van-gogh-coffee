@@ -347,10 +347,26 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 400; line-height: 1.02;
 .constellation svg { width: 100%; height: auto; max-height: 62vh; display: block; overflow: visible; }
 @media (max-width: 760px) { .s-find .inner { grid-template-columns: 1fr; align-content: center; } .constellation { display: none; } }
 @media (max-height: 560px) { .constellation { display: none; } .s-find .inner { grid-template-columns: 1fr; } }
+
+/* ---------- preloader ---------- */
+.preloader {
+  position: absolute; inset: 0; z-index: 100; display: grid; place-items: center;
+  background: radial-gradient(70% 55% at 50% -8%, rgba(255, 217, 138, .16), transparent 70%), var(--wall);
+  transition: opacity .7s ease, visibility 0s linear .7s;
+}
+.preloader.out { opacity: 0; visibility: hidden; }
+.preloader svg { width: min(38vw, 180px); height: auto; }
+.p-ring { transform-origin: 100px 100px; animation: pspin 3.2s linear infinite; }
+.p-ring.r2 { animation-duration: 4.6s; animation-direction: reverse; }
+.p-ring.r3 { animation-duration: 7s; }
+@keyframes pspin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .p-ring { animation: none; } .preloader { transition: none; } }
+/* hold the first slide's entrance until the curtain lifts */
+.wall.preloading .slide.on .rise { opacity: 0; transform: translateY(24px); transition: none; }
 </style>
 </head>
 <body>
-<div class="wall">
+<div class="wall preloading">
   <div class="frame">
     <div class="beads" aria-hidden="true"></div>
     <div class="painting" id="painting">
@@ -514,6 +530,20 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 400; line-height: 1.02;
     <button id="next" type="button" aria-label="Следующая картина"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 4l6 6-6 6"/></svg></button>
     <span class="screw"></span>
   </nav>
+
+  <div class="preloader" id="preloader" role="status" aria-label="Загрузка">
+    <svg viewBox="0 0 200 200" aria-hidden="true">
+      <defs>
+        <radialGradient id="pMoon">
+          <stop offset="0" stop-color="#fff3b8"/><stop offset=".45" stop-color="#f4c430"/><stop offset="1" stop-color="#f4c430" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="100" cy="100" r="34" fill="url(#pMoon)"/>
+      <g class="p-ring r1"><circle cx="100" cy="100" r="52" fill="none" stroke="#f4c430" stroke-width="3" stroke-linecap="round" stroke-dasharray="14 10 4 12 22 9 6 14"/></g>
+      <g class="p-ring r2"><circle cx="100" cy="100" r="70" fill="none" stroke="#5b77c9" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="26 12 8 16 34 10"/></g>
+      <g class="p-ring r3"><circle cx="100" cy="100" r="88" fill="none" stroke="#8aa3e0" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="6 18 30 14 10 22" opacity=".7"/></g>
+    </svg>
+  </div>
 </div>
 
 <script>
@@ -808,6 +838,29 @@ const start = Math.max(0, slides.findIndex(s => "#" + s.dataset.id === location.
 sky.resize(); sky.scene(sceneFor(start), true); sky.paint(70);
 showDrink(0); cup.resize(); cup.paint(60);
 go(start, true);
+
+/* preloader: hold the curtain until the fonts (Latin + Cyrillic subsets) are in, never longer than 4 s */
+(function preload() {
+  const wall = document.querySelector(".wall"), pre = document.getElementById("preloader");
+  const sample = "Van Gogh Кофе ₸ 0123";
+  const faces = ['24px "Yeseva One"', '16px "Golos Text"', '500 16px "Golos Text"', '600 16px "Golos Text"',
+    '400 16px "Oswald"', '500 16px "Oswald"', '600 16px "Oswald"', '26px "Marck Script"', '600 16px "Cormorant SC"'];
+  const fonts = document.fonts
+    ? Promise.all(faces.map(f => document.fonts.load(f, sample).catch(() => null))).then(() => document.fonts.ready)
+    : Promise.resolve();
+  const loaded = document.readyState === "complete" ? Promise.resolve() : new Promise(r => addEventListener("load", r, { once: true }));
+  const minShow = new Promise(r => setTimeout(r, 500));
+  const cap = new Promise(r => setTimeout(r, 4000));
+  let done = false;
+  function reveal() {
+    if (done) return; done = true;
+    pre.classList.add("out");
+    requestAnimationFrame(() => wall.classList.remove("preloading"));
+    setTimeout(() => { pre.hidden = true; }, reduce ? 0 : 700);
+  }
+  Promise.race([Promise.all([fonts, loaded, minShow]), cap]).then(reveal, reveal);
+})();
+
 let raf;
 function loop() {
   sky.tick();
