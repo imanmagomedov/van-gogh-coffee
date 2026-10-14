@@ -39,13 +39,15 @@
 
   --gap-wall: clamp(10px, 2.2vw, 34px);
   --fw: clamp(14px, 2.5vw, 42px);
+  --gap-bot: max(var(--gap-wall), calc(30px - var(--fw) * .5)); /* room for the brass plaque under the bottom rail */
   --pad-x: clamp(18px, 4.4vw, 70px);
   --pad-top: 78px;
   --pad-bot: 92px;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-html, body { height: 100%; overflow: hidden; }
+html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+body { position: fixed; inset: 0; }
 body { background: var(--wall); color: var(--chalk); font-family: var(--f-body); font-size: 16px; line-height: 1.55; overscroll-behavior: none; }
 a { color: inherit; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
@@ -62,7 +64,7 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 400; line-height: 1.02;
     var(--wall);
 }
 .frame {
-  position: absolute; inset: var(--gap-wall);
+  position: absolute; inset: var(--gap-wall) var(--gap-wall) var(--gap-bot);
   padding: var(--fw);
   background:
     linear-gradient(135deg, var(--gold-1) 0%, var(--gold-2) 14%, var(--gold-3) 24%, var(--gold-4) 38%, var(--gold-2) 52%, var(--gold-1) 62%, var(--gold-3) 78%, var(--gold-4) 100%);
@@ -108,7 +110,7 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 400; line-height: 1.02;
 /* brass plaque on the bottom rail = navigation */
 .plaque {
   position: absolute; z-index: 50; left: 50%; transform: translateX(-50%);
-  bottom: calc(var(--gap-wall) + var(--fw) * .5 - 23px);
+  bottom: calc(var(--gap-bot) + var(--fw) * .5 - 23px);
   display: flex; align-items: center; gap: 6px; height: 46px; padding-inline: 6px;
   max-width: calc(100% - 2 * var(--gap-wall) - 2 * var(--fw) - 24px);
   background: linear-gradient(180deg, #e8cf86 0%, var(--brass) 45%, #9c7a2c 100%);
