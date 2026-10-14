@@ -148,11 +148,14 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 400; line-height: 1.02;
 @media (max-width: 1100px) { .dots-nav { gap: 12px; } .dots-nav button { font-size: 0; letter-spacing: 0; padding: 8px 2px; } .dots-nav button::before { width: 7px; height: 7px; } }
 @media (max-width: 760px) {
   :root { --pad-top: 64px; --pad-bot: 70px; }
-  .chrome-top { height: 60px; } .chrome-bot { height: 56px; }
+  .chrome-top { height: 60px; gap: 12px; } .chrome-bot { height: 56px; }
+  .mark { font-size: 20px; }
+  .status { font-size: 10px; letter-spacing: .1em; padding: 7px 10px; gap: 7px; }
   .signature { display: none; }
   .dots-nav { margin-inline: auto; }
   .plaque .title b { display: none; }
 }
+@media (max-width: 420px) { .mark span { display: none; } }
 
 /* ---------- slides ---------- */
 .slide { position: absolute; inset: 0; z-index: 10; padding: var(--pad-top) var(--pad-x) var(--pad-bot); opacity: 0; visibility: hidden; transition: opacity .8s ease, visibility 0s linear .8s; }
