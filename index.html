@@ -48,6 +48,10 @@
 * { box-sizing: border-box; }
 html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 body { position: fixed; inset: 0; }
+/* the page itself never pans; only the menu list and the category strip scroll */
+.wall { touch-action: none; }
+.items { touch-action: pan-y; }
+.cats { touch-action: pan-x; }
 body { background: var(--wall); color: var(--chalk); font-family: var(--f-body); font-size: 16px; line-height: 1.55; overscroll-behavior: none; }
 a { color: inherit; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
@@ -770,6 +774,8 @@ addEventListener("keydown", e => {
   else if (e.key === "End") go(slides.length - 1);
 });
 let tx = 0, ty = 0, tEl = null;
+// iOS Safari still rubber-bands a fixed page; block it everywhere except the two scrollable strips
+document.addEventListener("touchmove", e => { if (!(e.target.closest && e.target.closest(".items, .cats"))) e.preventDefault(); }, { passive: false });
 addEventListener("touchstart", e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; tEl = e.target; }, { passive: true });
 addEventListener("touchend", e => {
   const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
