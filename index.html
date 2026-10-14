@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#141a33">
+<meta name="robots" content="noindex">
+<meta name="description" content="Van Gogh coffee — кофейня в Астане, ул. Анатолия Храпатого, 12. Авторский кофе, чаи и десерты.">
+<style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Van Gogh Coffee Astana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500;600&family=Marck+Script&family=Cormorant+SC:wght@500;600&display=swap">
+<style>
+/* Layout: the browser window is a gallery wall; the site is one framed painting. Six scenes are "works" inside the frame,
+   their facts set as museum wall labels, the brass plaque on the frame is the navigation. */
+:root {
+  --wall: #141a33;        /* the cafe's dark slate-blue wall */
+  --night: #0f1538;
+  --deep: #0a0f2a;
+  --swirl: #3a4ea3;
+  --sun: #f4c430;
+  --lamp: #ffd98a;
+  --chalk: #eef0fa;
+  --muted: #a3acd6;
+  --line: rgba(163, 172, 214, .22);
+  --ink-on-sun: #15152a;
+  --paper: #efe9db;       /* museum label card */
+  --ink: #1d1d29;
+  --ink-soft: #5d5a66;
+  --gold-1: #6b4a17; --gold-2: #d9a93f; --gold-3: #f6dd8a; --gold-4: #9a6c22;
+  --brass: #c9a44e;
+
+  --f-display: "Yeseva One", "Georgia", serif;
+  --f-body: "Golos Text", "Helvetica Neue", Arial, sans-serif;
+  --f-board: "Oswald", "Arial Narrow", sans-serif;
+  --f-hand: "Marck Script", "Segoe Script", cursive;
+  --f-plaque: "Cormorant SC", "Georgia", serif;
+
+  --gap-wall: clamp(10px, 2.2vw, 34px);
+  --fw: clamp(14px, 2.5vw, 42px);
+  --pad-x: clamp(18px, 4.4vw, 70px);
+  --pad-top: 78px;
+  --pad-bot: 92px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body { background: var(--wall); color: var(--chalk); font-family: var(--f-body); font-size: 16px; line-height: 1.55; overscroll-behavior: none; }
+a { color: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--sun); outline-offset: 4px; border-radius: 3px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 400; line-height: 1.02; text-wrap: balance; }
+
+/* ---------- gallery wall + gilded frame ---------- */
+.wall {
+  position: fixed; inset: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px) 0; overflow: hidden;
+  background:
+    radial-gradient(70% 55% at 50% -8%, rgba(255, 217, 138, .22), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 2px, transparent 2px 7px),
+    var(--wall);
+}
+.frame {
+  position: absolute; inset: var(--gap-wall);
+  padding: var(--fw);
+  background:
+    linear-gradient(135deg, var(--gold-1) 0%, var(--gold-2) 14%, var(--gold-3) 24%, var(--gold-4) 38%, var(--gold-2) 52%, var(--gold-1) 62%, var(--gold-3) 78%, var(--gold-4) 100%);
+  box-shadow:
+    0 30px 70px -18px rgba(0,0,0,.85), 0 8px 18px rgba(0,0,0,.5),
+    inset 0 0 0 1px rgba(255, 245, 200, .65),
+    inset 3px 3px 0 rgba(255, 240, 190, .45),
+    inset -3px -3px 0 rgba(50, 30, 5, .55);
+}
+/* beaded band in the middle of the molding */
+.frame .beads {
+  position: absolute; inset: calc(var(--fw) * .3); padding: calc(var(--fw) * .16);
+  background:
+    radial-gradient(circle, rgba(255, 238, 170, .95) 0 1.6px, rgba(120, 80, 20, .7) 2.2px, transparent 2.8px) 0 0 / 8px 8px,
+    linear-gradient(135deg, #8a6020, #c7953a 40%, #7a5418);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude;
+  box-shadow: inset 0 0 0 1px rgba(60, 35, 5, .5);
+  pointer-events: none;
+}
+/* rosettes in the four corners */
+.frame::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  --r: calc(var(--fw) * .5);
+  background:
+    radial-gradient(circle at calc(var(--fw) * .5) calc(var(--fw) * .5), var(--gold-3) 0 calc(var(--r) * .28), var(--gold-4) calc(var(--r) * .34) calc(var(--r) * .5), var(--gold-2) calc(var(--r) * .56) calc(var(--r) * .78), transparent calc(var(--r) * .82)),
+    radial-gradient(circle at calc(100% - var(--fw) * .5) calc(var(--fw) * .5), var(--gold-3) 0 calc(var(--r) * .28), var(--gold-4) calc(var(--r) * .34) calc(var(--r) * .5), var(--gold-2) calc(var(--r) * .56) calc(var(--r) * .78), transparent calc(var(--r) * .82)),
+    radial-gradient(circle at calc(var(--fw) * .5) calc(100% - var(--fw) * .5), var(--gold-3) 0 calc(var(--r) * .28), var(--gold-4) calc(var(--r) * .34) calc(var(--r) * .5), var(--gold-2) calc(var(--r) * .56) calc(var(--r) * .78), transparent calc(var(--r) * .82)),
+    radial-gradient(circle at calc(100% - var(--fw) * .5) calc(100% - var(--fw) * .5), var(--gold-3) 0 calc(var(--r) * .28), var(--gold-4) calc(var(--r) * .34) calc(var(--r) * .5), var(--gold-2) calc(var(--r) * .56) calc(var(--r) * .78), transparent calc(var(--r) * .82));
+}
+.painting { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--night); box-shadow: 0 0 0 2px #3a2a0f; }
+/* canvas weave + varnish vignette + the frame's shadow on the canvas */
+.painting::after {
+  content: ""; position: absolute; inset: 0; z-index: 40; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.07) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(5, 8, 25, .5) 100%);
+  box-shadow: inset 8px 8px 22px rgba(0,0,0,.65), inset -2px -2px 10px rgba(0,0,0,.4);
+}
+#sky { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* brass plaque on the bottom rail = navigation */
+.plaque {
+  position: absolute; z-index: 50; left: 50%; transform: translateX(-50%);
+  bottom: calc(var(--gap-wall) + var(--fw) * .5 - 23px);
+  display: flex; align-items: center; gap: 6px; height: 46px; padding-inline: 6px;
+  max-width: calc(100% - 2 * var(--gap-wall) - 2 * var(--fw) - 24px);
+  background: linear-gradient(180deg, #e8cf86 0%, var(--brass) 45%, #9c7a2c 100%);
+  border-radius: 3px; color: #2b1f08;
+  box-shadow: 0 6px 14px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,250,220,.8), inset 0 -1px 0 rgba(70,45,5,.6), inset 0 0 0 1px rgba(90,60,10,.4);
+}
+.plaque .title { font: 600 clamp(14px, 1.5vw, 17px)/1 var(--f-plaque); letter-spacing: .06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-inline: 8px; min-width: 0; text-align: center; }
+.plaque .title b { font-weight: 600; opacity: .7; margin-right: 8px; }
+.plaque button { width: 34px; height: 34px; flex: none; border-radius: 50%; display: grid; place-items: center; color: #2b1f08; transition: background .2s; }
+.plaque button:hover { background: rgba(255, 245, 210, .4); }
+.plaque button[disabled] { opacity: .3; cursor: default; background: none; }
+.plaque svg { width: 16px; height: 16px; }
+.plaque .screw { width: 6px; height: 6px; flex: none; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff2c0, #7a5a18 70%); }
+
+/* ---------- inside the painting ---------- */
+.chrome-top, .chrome-bot { position: absolute; left: 0; right: 0; z-index: 30; display: flex; align-items: center; gap: 20px; padding-inline: var(--pad-x); }
+.chrome-top { top: 0; height: 74px; }
+.chrome-bot { bottom: 0; height: 74px; }
+.mark { font-family: var(--f-display); font-size: 24px; text-decoration: none; line-height: 1; }
+.mark span { font-family: var(--f-hand); color: var(--lamp); font-size: 21px; margin-left: 6px; }
+.mark { text-shadow: 0 1px 12px rgba(5,8,25,.9), 0 0 2px rgba(5,8,25,.8); }
+.status {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 9px; font: 500 12px/1 var(--f-board); letter-spacing: .16em; text-transform: uppercase; color: var(--muted);
+  padding: 9px 14px; border-radius: 999px; background: rgba(10,15,42,.78); box-shadow: inset 0 0 0 1px rgba(244,196,48,.35), 0 6px 18px -6px rgba(0,0,0,.7);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.status i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+.status.open { color: var(--chalk); }
+.status.open i { background: var(--sun); box-shadow: 0 0 10px 2px var(--sun); }
+.dots-nav { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }
+.dots-nav button { font: 500 11px/1 var(--f-board); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; padding-block: 8px; transition: color .3s; }
+.dots-nav button::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: .6; transition: all .3s; }
+.dots-nav button:hover { color: var(--chalk); }
+.dots-nav button[aria-current="true"] { color: var(--sun); }
+.dots-nav button[aria-current="true"]::before { opacity: 1; box-shadow: 0 0 8px 2px var(--sun); }
+.signature { margin-left: auto; font-family: var(--f-hand); font-size: 26px; color: var(--lamp); opacity: .85; transform: rotate(-4deg); white-space: nowrap; }
+@media (max-width: 1100px) { .dots-nav { gap: 12px; } .dots-nav button { font-size: 0; letter-spacing: 0; padding: 8px 2px; } .dots-nav button::before { width: 7px; height: 7px; } }
+@media (max-width: 760px) {
+  :root { --pad-top: 64px; --pad-bot: 70px; }
+  .chrome-top { height: 60px; } .chrome-bot { height: 56px; }
+  .signature { display: none; }
+  .dots-nav { margin-inline: auto; }
+  .plaque .title b { display: none; }
+}
+
+/* ---------- slides ---------- */
+.slide { position: absolute; inset: 0; z-index: 10; padding: var(--pad-top) var(--pad-x) var(--pad-bot); opacity: 0; visibility: hidden; transition: opacity .8s ease, visibility 0s linear .8s; }
+.slide.on { opacity: 1; visibility: visible; transition: opacity .8s ease, visibility 0s; z-index: 11; }
+.slide::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--shade, none); }
+.inner { position: relative; height: 100%; max-width: 1400px; margin-inline: auto; }
+.rise { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.75,.2,1); transition-delay: calc(var(--i, 0) * 90ms + 150ms); }
+.slide.on .rise { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .slide, .slide.on { transition: none; } .rise { transition: none; transform: none; opacity: 1; } }
+.kicker { font: 500 12px/1.2 var(--f-board); letter-spacing: .24em; text-transform: uppercase; color: var(--sun); text-shadow: 0 1px 12px rgba(5,8,25,.9), 0 0 2px rgba(5,8,25,.8); }
+.hand { font-family: var(--f-hand); color: var(--lamp); line-height: 1.1; text-shadow: 0 1px 12px rgba(5,8,25,.9), 0 0 2px rgba(5,8,25,.8); }
+
+/* museum wall label */
+.label {
+  background: var(--paper); color: var(--ink);
+  padding: 16px 20px 18px; border-radius: 1px; max-width: 360px;
+  box-shadow: 0 10px 24px -6px rgba(0,0,0,.65), 0 1px 0 rgba(255,255,255,.6) inset;
+  font-size: 14px; line-height: 1.45; display: grid; gap: 6px;
+}
+.label .l-title { font: 600 17px/1.25 var(--f-body); }
+.label .l-title em { font-style: italic; font-weight: 500; }
+.label .l-by { color: var(--ink-soft); font-size: 13px; }
+.label .l-med { font-style: italic; color: var(--ink); }
+.label .l-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 6px; padding-top: 8px; border-top: 1px solid rgba(29,29,41,.18); font-size: 13px; color: var(--ink-soft); }
+.label .l-price { font: 600 18px/1 var(--f-board); color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.label a:not(.label-btn) { color: var(--ink); }
+.label .iced { color: #2a6aa8; }
+.label-btn { display: inline-flex; align-items: center; gap: 8px; font: 500 13px/1 var(--f-board); letter-spacing: .14em; text-transform: uppercase; text-decoration: none; background: var(--ink); color: var(--paper); padding: 11px 14px; border-radius: 2px; }
+.label-btn.alt { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.label-btn:hover { background: #3a3550; color: var(--paper); }
+.iced { font: 600 10px/1 var(--f-board); letter-spacing: .16em; text-transform: uppercase; color: #9fd3ff; border: 1px solid currentColor; border-radius: 2px; padding: 3px 5px; vertical-align: 2px; margin-left: 6px; }
+
+/* 1 — hero */
+.s-hero { --shade: linear-gradient(20deg, rgba(10,15,42,.8) 0%, rgba(10,15,42,.3) 45%, transparent 70%); }
+.s-hero .inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px clamp(24px, 4vw, 64px); }
+.hero-word { align-self: end; position: relative; min-width: 0; isolation: isolate; }
+.hero-word::before {
+  content: ""; position: absolute; inset: -14% -12% -10% -8%; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(10,15,42,.78), rgba(10,15,42,.45) 62%, transparent);
+}
+.s-hero .mega, .s-hero .kicker, .s-hero .hand { text-shadow: 0 2px 16px rgba(5,8,25,.9), 0 0 3px rgba(5,8,25,.8); }
+@media (max-aspect-ratio: 1/1) {
+  .s-hero { --shade: linear-gradient(0deg, rgba(10,15,42,.88) 0%, rgba(10,15,42,.6) 55%, rgba(10,15,42,.3) 100%); }
+}
+.mega { font-size: clamp(72px, min(17vw, 25vh), 280px); line-height: .8; letter-spacing: -.02em; }
+.mega .g { color: transparent; -webkit-text-stroke: 1.5px var(--chalk); }
+.hero-word .hand { position: absolute; font-size: clamp(28px, min(4.2vw, 6.6vh), 64px); transform: rotate(-6deg); left: clamp(130px, min(28vw, 44vh), 450px); bottom: clamp(64px, min(9.6vw, 14.5vh), 145px); white-space: nowrap; }
+.hero-foot { display: grid; justify-items: end; gap: 16px; }
+.hero-foot .label { order: -1; max-width: 340px; }
+@media (max-width: 900px) {
+  .s-hero .inner { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+  .hero-foot { justify-items: stretch; }
+  .hero-foot .label { max-width: 420px; }
+}
+@media (max-height: 820px) { :root { --pad-top: 66px; --pad-bot: 78px; --fw: clamp(12px, 2vw, 30px); --gap-wall: clamp(8px, 1.6vw, 24px); } .chrome-top { height: 62px; } .chrome-bot { height: 60px; } }
+.swipe-hint { font: 500 12px/1 var(--f-board); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); display: inline-flex; gap: 10px; align-items: center; }
+.swipe-hint i { width: 44px; height: 1px; background: var(--muted); position: relative; overflow: hidden; }
+.swipe-hint i::after { content: ""; position: absolute; inset: 0; background: var(--sun); transform: translateX(-100%); animation: hint 2.4s ease-in-out infinite; }
+@keyframes hint { 60%, 100% { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .swipe-hint i::after { animation: none; transform: none; } }
+@media (max-width: 760px) {
+  .swipe-hint { display: none; }
+  .hero-foot .label { max-width: none; width: 100%; }
+  .hero-word .hand { position: static; white-space: normal; margin-top: 16px; font-size: clamp(26px, 8vw, 36px); transform: rotate(-4deg); transform-origin: left; }
+}
+@media (max-height: 700px) { .hero-foot .label .l-med { display: none; } }
+
+/* 2 — signature drinks */
+.s-drinks { --shade: linear-gradient(90deg, rgba(10,15,42,.86) 0%, rgba(10,15,42,.5) 50%, rgba(10,15,42,.2) 100%); }
+.s-drinks .inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px clamp(24px, 4vw, 72px); align-items: center; }
+.drink-text { display: grid; gap: 18px; align-content: center; justify-items: start; min-width: 0; }
+.drink-name { font-size: clamp(38px, min(5.4vw, 8.6vh), 92px); min-height: 2.04em; display: flex; align-items: end; }
+.drink-pick { display: flex; flex-wrap: wrap; gap: 4px 20px; list-style: none; margin: 4px 0 0; padding: 0; }
+.drink-pick button { font: 500 12px/1.3 var(--f-board); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding-block: 6px; transition: color .25s; text-align: left; }
+.drink-pick button:hover { color: var(--chalk); }
+.drink-pick button[aria-pressed="true"] { color: var(--sun); }
+.cup-col { justify-self: center; display: grid; justify-items: center; gap: 18px; min-width: 0; }
+.cup-wrap { position: relative; width: min(52vh, 34vw, 540px); aspect-ratio: 1; max-width: 100%; cursor: pointer; }
+.cup-arr {
+  position: absolute; top: 50%; z-index: 3; width: 44px; height: 44px; margin-top: -22px; border-radius: 50%;
+  display: grid; place-items: center; color: var(--chalk);
+  background: rgba(10,15,42,.65); box-shadow: inset 0 0 0 1px var(--line), 0 8px 20px -8px #000;
+  transition: transform .2s, background .2s;
+}
+.cup-arr svg { width: 18px; height: 18px; }
+.cup-arr.prev { left: -58px; }
+.cup-arr.next { right: -58px; background: var(--sun); color: var(--ink-on-sun); }
+.cup-arr:hover { transform: scale(1.08); }
+.saucer { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, #e7e9f5 0 60%, #cfd3e6 61% 63%, #e9ebf6 64% 100%); box-shadow: 0 40px 80px -30px #000; }
+.cup { position: absolute; inset: 15%; border-radius: 50%; background: #fbfbff; padding: 5.5%; box-shadow: 0 16px 30px -10px rgba(0,0,0,.45), inset 0 -8px 0 #dfe2ef; }
+.cup::after { content: ""; position: absolute; right: -15%; top: 42%; width: 17%; height: 16%; border: 9px solid #fbfbff; border-left: 0; border-radius: 0 40px 40px 0; box-shadow: 6px 8px 14px -6px rgba(0,0,0,.35); }
+#cupCanvas { width: 100%; height: 100%; border-radius: 50%; display: block; box-shadow: inset 0 0 0 3px rgba(0,0,0,.08); transition: transform 1.2s cubic-bezier(.2,.75,.2,1); }
+.ds-dots { display: flex; gap: 12px; justify-content: center; }
+.ds-dots button { width: 22px; height: 22px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 2px rgba(238,240,250,.25); transition: transform .2s, box-shadow .2s; }
+.ds-dots button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--night), 0 0 0 4px var(--sun); transform: scale(1.12); }
+@media (max-width: 760px) {
+  .s-drinks .label .l-by { display: none; }
+  .s-drinks .inner { grid-template-columns: 1fr; grid-template-rows: auto 1fr; align-items: start; gap: 10px; }
+  .cup-col { order: -1; gap: 12px; }
+  .cup-wrap { width: min(23vh, 50vw); }
+  .cup-arr { width: 38px; height: 38px; margin-top: -19px; }
+  .cup-arr.prev { left: -50px; }
+  .cup-arr.next { right: -50px; }
+  .ds-dots button { width: 18px; height: 18px; }
+  .drink-text { gap: 10px; }
+  .drink-name { min-height: 0; font-size: clamp(30px, 8vw, 40px); }
+  .drink-pick { display: none; }
+  .s-drinks .label { padding: 12px 14px; }
+}
+
+/* 3 — menu board */
+.s-menu { --shade: rgba(10,15,42,.8); }
+.s-menu .inner { display: grid; grid-template-columns: minmax(190px, 280px) minmax(0, 1fr); gap: clamp(28px, 5vw, 90px); }
+.cats { display: grid; align-content: start; gap: 2px; }
+.cats .kicker { margin-bottom: 14px; }
+.cats button { justify-self: start; font: 500 clamp(16px, 2.5vh, 22px)/1 var(--f-board); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); padding: 8px 10px; margin-left: -10px; border-radius: 3px; transition: color .25s, background .25s, transform .25s; }
+.cats button:hover { color: var(--chalk); }
+.cats button[aria-pressed="true"] { background: var(--sun); color: var(--ink-on-sun); transform: rotate(-1.5deg); box-shadow: 0 0 26px -4px rgba(244,196,48,.6); }
+.board { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 20px; }
+.board h2 { font-size: clamp(38px, min(5vw, 8.4vh), 84px); }
+.items { list-style: none; margin: 0; padding: 0 6px 0 0; display: grid; align-content: start; gap: clamp(10px, 1.7vh, 17px); overflow-y: auto; scrollbar-width: thin; }
+.items li { display: flex; align-items: baseline; gap: 14px; animation: itemIn .5s cubic-bezier(.2,.75,.2,1) both; animation-delay: calc(var(--i) * 45ms); }
+@keyframes itemIn { from { opacity: 0; transform: translateX(-14px); } }
+@media (prefers-reduced-motion: reduce) { .items li { animation: none; } }
+.items .n { font: 400 clamp(18px, 2.9vh, 27px)/1.2 var(--f-board); letter-spacing: .03em; text-transform: uppercase; min-width: 0; }
+.items .n small { display: block; font: 400 13px/1.4 var(--f-body); letter-spacing: 0; text-transform: none; color: var(--muted); }
+.items .n .iced { margin-left: 10px; vertical-align: 4px; }
+.items .dots { flex: 1; min-width: 20px; border-bottom: 1.5px dotted rgba(244,196,48,.55); transform: translateY(-6px); }
+.items .p { font: 500 clamp(18px, 2.9vh, 27px)/1 var(--f-board); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.items .p s { text-decoration: none; color: var(--muted); }
+.items .p .cur { font-family: var(--f-body); font-weight: 500; font-size: .82em; color: var(--sun); margin-left: .3em; }
+.board-note { color: var(--muted); font-size: 13px; }
+@media (max-width: 760px) {
+  .s-menu .inner { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 14px; }
+  .cats { display: flex; overflow-x: auto; gap: 6px; padding-bottom: 6px; scrollbar-width: none; }
+  .cats .kicker { display: none; }
+  .cats button { flex: none; margin-left: 0; font-size: 15px; border: 1px solid var(--line); }
+  .board { gap: 12px; }
+}
+
+/* 4 — hall */
+.s-hall { --shade: linear-gradient(0deg, rgba(10,15,42,.9) 0%, rgba(10,15,42,.5) 55%, rgba(10,15,42,.3) 100%); }
+.garland { position: absolute; left: 0; right: 0; top: 0; height: 70%; pointer-events: none; }
+.garland .str { position: absolute; top: 0; width: 1px; background: linear-gradient(rgba(255,217,138,.35), transparent); }
+.garland .b { position: absolute; width: 6px; height: 6px; margin-left: -2.5px; border-radius: 50%; background: var(--lamp); box-shadow: 0 0 6px 2px rgba(255,217,138,.7), 0 0 20px 7px rgba(255,217,138,.18); animation: twinkle var(--d, 4s) ease-in-out var(--delay, 0s) infinite; }
+@keyframes twinkle { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+@media (prefers-reduced-motion: reduce) { .garland .b { animation: none; } }
+.s-hall .inner { display: grid; align-content: end; gap: clamp(20px, 3.6vh, 44px); }
+.s-hall h2 { font-size: clamp(40px, min(6.6vw, 10.5vh), 112px); max-width: 13ch; }
+.s-hall h2 .hand { font-size: .6em; display: block; margin-top: .15em; transform: rotate(-3deg); transform-origin: left; }
+.spots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px clamp(16px, 2.6vw, 40px); list-style: none; margin: 0; padding: 0; }
+.spots .label { max-width: none; }
+.spots .label:nth-child(1) { transform: rotate(-.6deg); }
+.spots .label:nth-child(3) { transform: rotate(.5deg); }
+@media (max-width: 760px) {
+  .spots { grid-template-columns: 1fr; gap: 8px; }
+  .spots .label { padding: 10px 14px; transform: none !important; }
+  .spots .l-by { display: none; }
+}
+
+/* 5 — events */
+.s-events { --shade: linear-gradient(90deg, rgba(10,15,42,.88) 0%, rgba(10,15,42,.45) 60%, rgba(10,15,42,.2) 100%); }
+.s-events .inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(20px, 4vw, 80px); align-items: center; }
+.bigdate { font-family: var(--f-display); font-size: clamp(140px, min(24vw, 44vh), 400px); line-height: .78; color: transparent; -webkit-text-stroke: 2px var(--sun); letter-spacing: -.04em; }
+.ev { display: grid; gap: 18px; align-content: center; justify-items: start; max-width: 560px; }
+.ev h2 { font-size: clamp(42px, min(5.6vw, 9.5vh), 92px); }
+.ev .hand { font-size: clamp(24px, 3.4vh, 36px); transform: rotate(-4deg); transform-origin: left; }
+@media (max-width: 760px) { .s-events .inner { grid-template-columns: 1fr; align-content: center; gap: 0; } .bigdate { font-size: min(40vw, 24vh); } .ev { gap: 12px; } }
+
+/* 6 — find */
+.s-find { --shade: linear-gradient(90deg, rgba(10,15,42,.88) 0%, rgba(10,15,42,.55) 55%, rgba(10,15,42,.25) 100%); }
+.s-find .inner { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 72px); align-items: center; }
+.find-text { display: grid; gap: clamp(16px, 2.8vh, 28px); justify-items: start; }
+.find-text h2 { font-size: clamp(42px, min(6.2vw, 10.5vh), 106px); }
+.find-text h2 .hand { display: block; font-size: .42em; margin-top: .25em; transform: rotate(-3deg); transform-origin: left; }
+.rows { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 20px; align-items: baseline; }
+.rows dt { font: 500 11px/1 var(--f-board); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-soft); }
+.rows dd { margin: 0; font-size: 15px; }
+.copy { font: 500 10px/1 var(--f-board); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); margin-left: 10px; border-bottom: 1px dotted var(--ink-soft); padding-block: 3px; vertical-align: 1px; }
+.copy:hover { color: var(--ink); }
+.label-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.constellation { width: 100%; }
+.constellation svg { width: 100%; height: auto; max-height: 62vh; display: block; overflow: visible; }
+@media (max-width: 760px) { .s-find .inner { grid-template-columns: 1fr; align-content: center; } .constellation { display: none; } }
+@media (max-height: 560px) { .constellation { display: none; } .s-find .inner { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wall">
+  <div class="frame">
+    <div class="beads" aria-hidden="true"></div>
+    <div class="painting" id="painting">
+      <canvas id="sky" aria-hidden="true"></canvas>
+
+      <header class="chrome-top">
+        <a class="mark" href="#home" data-go="0">Van Gogh<span>coffee</span></a>
+        <span class="status" id="status"><i></i><span>8:00–22:00</span></span>
+      </header>
+
+      <!-- I -->
+      <section class="slide s-hero on" data-name="Главная" data-work="Кофе под звёздным небом" data-id="home" aria-label="Главная">
+        <div class="inner">
+          <div class="hero-word">
+            <p class="kicker rise" style="--i:0;margin-bottom:20px">Кофейня · Астана · ЖК Holland</p>
+            <h1 class="mega rise" style="--i:1">Van<br><span class="g">Gogh</span></h1>
+            <p class="hand rise" style="--i:3">кофе под звёздным небом</p>
+          </div>
+          <div class="hero-foot">
+            <span class="swipe-hint rise" style="--i:5">листайте картины <i></i></span>
+            <div class="label rise" style="--i:4">
+              <p class="l-title">Van Gogh coffee. <em>Кофе под звёздным небом</em>, 2026</p>
+              <p class="l-med">Эспрессо, молоко, гирлянды, белый кирпич.</p>
+              <p class="l-by">ул. Анатолия Храпатого, 12, цокольный этаж</p>
+              <div class="l-foot"><span>Ежедневно 8:00–22:00</span><span>★ 4.8 · 2ГИС</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- II -->
+      <section class="slide s-drinks" data-name="Напитки" data-work="Пять чашек" data-id="drinks" aria-label="Авторский кофе">
+        <div class="inner">
+          <div class="drink-text">
+            <p class="kicker rise" style="--i:0">Авторский кофе · <span id="dIdx">01</span> / 05</p>
+            <h2 class="drink-name rise" style="--i:1" id="dName">Латте крем-брюле малина</h2>
+            <div class="label rise" style="--i:2">
+              <p class="l-title" id="dLabelTitle"><em>Латте крем-брюле малина</em>, 2026</p>
+              <p class="l-med" id="dMed">Эспрессо, молоко, крем-брюле, малина. Фарфор.</p>
+              <p class="l-by">Бар Van Gogh coffee, Астана</p>
+              <div class="l-foot"><span id="dHall">Зал авторского кофе</span><span class="l-price" id="dPrice">1 490 ₸</span></div>
+            </div>
+            <ul class="drink-pick rise" style="--i:3" id="dPick"></ul>
+          </div>
+          <div class="cup-col rise" style="--i:1">
+            <div class="cup-wrap">
+              <div class="saucer"></div>
+              <div class="cup"><canvas id="cupCanvas" aria-hidden="true"></canvas></div>
+              <button class="cup-arr prev" id="dPrev" type="button" aria-label="Предыдущий напиток"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+              <button class="cup-arr next" id="dNext" type="button" aria-label="Следующий напиток"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 4l6 6-6 6"/></svg></button>
+            </div>
+            <span class="ds-dots" id="dDots" role="group" aria-label="Выбор напитка"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- III -->
+      <section class="slide s-menu" data-name="Меню" data-work="Каталог напитков" data-id="menu" aria-label="Меню">
+        <div class="inner">
+          <nav class="cats rise" style="--i:0" id="cats" aria-label="Разделы меню"><p class="kicker">Каталог</p></nav>
+          <div class="board rise" style="--i:1">
+            <h2 id="catTitle">Кофе</h2>
+            <ul class="items" id="items"></ul>
+            <p class="board-note" id="catNote"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- IV -->
+      <section class="slide s-hall" data-name="Зал" data-work="Ночная терраса на Храпатого" data-id="hall" aria-label="Зал">
+        <div class="garland" id="garland" aria-hidden="true"></div>
+        <div class="inner">
+          <h2 class="rise" style="--i:0">Тысяча огоньков на Храпатого <span class="hand">и Винсент на стенах</span></h2>
+          <ul class="spots rise" style="--i:2">
+            <li class="label"><p class="l-title"><em>У окна</em></p><p class="l-med">Длинная стойка, высокие стулья, розетки.</p><p class="l-by">Удобно сесть с ноутбуком.</p></li>
+            <li class="label"><p class="l-title"><em>Круглые столики</em></p><p class="l-med">Дерево, венские стулья, на двоих-четверых.</p><p class="l-by">Для завтрака и долгого разговора.</p></li>
+            <li class="label"><p class="l-title"><em>Диван у стены</em></p><p class="l-med">Синий бархат под «Ночной террасой кафе».</p><p class="l-by">Для компании побольше.</p></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- V -->
+      <section class="slide s-events" data-name="Вечера" data-work="Вечер росписи" data-id="events" aria-label="Мастер-классы">
+        <div class="inner">
+          <div class="bigdate rise" style="--i:0" aria-hidden="true">17</div>
+          <div class="ev">
+            <p class="kicker rise" style="--i:1">Мастер-класс · 17 сентября · 20:00</p>
+            <h2 class="rise" style="--i:2">Роспись гипса</h2>
+            <div class="label rise" style="--i:3">
+              <p class="l-title"><em>Вечер росписи</em>, 17.09.2026</p>
+              <p class="l-med">Гипс, акрил, кофе и десерты.</p>
+              <p class="l-by">Гости расписывали гипсовые фигурки за общим столом. Такие вечера проходят регулярно.</p>
+              <div class="l-foot"><span>Начало в 20:00</span><a href="https://www.instagram.com/van.gogh.coffee" target="_blank" rel="noopener">Анонсы в Instagram →</a></div>
+            </div>
+            <p class="hand rise" style="--i:4">этот уже прошёл, следующий скоро!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- VI -->
+      <section class="slide s-find" data-name="Адрес" data-work="Как найти" data-id="find" aria-label="Как найти">
+        <div class="inner">
+          <div class="find-text">
+            <p class="kicker rise" style="--i:0">Как найти</p>
+            <h2 class="rise" style="--i:1">Храпатого, 12 <span class="hand">цокольный этаж ЖК Holland</span></h2>
+            <div class="label rise" style="--i:2">
+              <dl class="rows">
+                <dt>Район</dt><dd>Сарайшык, Астана</dd>
+                <dt>Часы</dt><dd>Каждый день, 8:00–22:00</dd>
+                <dt>Телефон</dt><dd><span id="phone">+7 702 804 20 36</span><button class="copy" id="copyPhone" type="button">копировать</button></dd>
+                <dt>Instagram</dt><dd>@van.gogh.coffee</dd>
+              </dl>
+              <div class="label-actions">
+                <a class="label-btn" href="https://2gis.kz/astana/firm/70000001075250691" target="_blank" rel="noopener">Маршрут в 2ГИС</a>
+                <a class="label-btn alt" href="https://wa.me/77028042036" target="_blank" rel="noopener">WhatsApp</a>
+                <a class="label-btn alt" href="https://www.instagram.com/van.gogh.coffee" target="_blank" rel="noopener">Instagram</a>
+              </div>
+            </div>
+          </div>
+          <div class="constellation rise" style="--i:2">
+            <svg viewBox="0 0 520 420" role="img" aria-label="Схема квартала: кофейня Van Gogh на улице Храпатого рядом с кварталами London, Salzburg, Austria и England">
+              <g stroke="rgba(163,172,214,.35)" stroke-width="1" fill="none">
+                <path d="M20 120 C 150 150, 230 200, 320 250 S 470 330, 510 350" stroke-dasharray="2 6" stroke-width="2" stroke="rgba(244,196,48,.55)"/>
+                <path d="M200 10 L 250 410" stroke-dasharray="2 6"/>
+                <path d="M60 50 L120 70 L200 40 L300 60 L420 90 L470 150 L330 200 L250 175 L60 50"/>
+                <path d="M90 300 L170 330 L260 300 L330 200 L420 280 L470 260"/>
+              </g>
+              <g fill="#eef0fa">
+                <circle cx="60" cy="50" r="2.5"/><circle cx="120" cy="70" r="2"/><circle cx="200" cy="40" r="3"/>
+                <circle cx="300" cy="60" r="2.5"/><circle cx="420" cy="90" r="3"/><circle cx="470" cy="150" r="2"/>
+                <circle cx="250" cy="175" r="2"/><circle cx="90" cy="300" r="2.5"/><circle cx="170" cy="330" r="2"/>
+                <circle cx="260" cy="300" r="2.5"/><circle cx="420" cy="280" r="2.5"/><circle cx="470" cy="260" r="2"/>
+              </g>
+              <g font-family="Oswald, sans-serif" font-size="12" letter-spacing="2.4" fill="#a3acd6">
+                <text x="44" y="34">LONDON</text><text x="270" y="44">SALZBURG</text><text x="430" y="78">AUSTRIA</text><text x="64" y="324">ENGLAND</text>
+              </g>
+              <text font-family="Oswald, sans-serif" font-size="11" letter-spacing="2.4" fill="#a3acd6"><textPath href="#street" startOffset="4%">УЛ. АНАТОЛИЯ ХРАПАТОГО</textPath></text>
+              <path id="street" d="M20 110 C 150 140, 230 190, 320 240 S 470 320, 510 340" fill="none"/>
+              <g transform="translate(330 200)">
+                <circle r="44" fill="rgba(244,196,48,.08)"/><circle r="24" fill="rgba(244,196,48,.18)"/>
+                <path d="M0 -15 L3.6 -4.6 L15 -4.6 L5.8 2.2 L9.2 13 L0 6.6 L-9.2 13 L-5.8 2.2 L-15 -4.6 L-3.6 -4.6 Z" fill="#f4c430"/>
+                <text x="30" y="-8" font-family="Yeseva One, serif" font-size="24" fill="#eef0fa">Van Gogh</text>
+                <text x="31" y="14" font-family="Oswald, sans-serif" font-size="11" letter-spacing="2.4" fill="#f4c430">ЖК HOLLAND · №12</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <footer class="chrome-bot">
+        <ol class="dots-nav" id="dotsNav"></ol>
+        <span class="signature" aria-hidden="true">Vincent</span>
+      </footer>
+    </div>
+  </div>
+
+  <nav class="plaque" aria-label="Картины">
+    <span class="screw"></span>
+    <button id="prev" type="button" aria-label="Предыдущая картина"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+    <span class="title" id="plaqueTitle" aria-live="polite"><b>I</b>«Кофе под звёздным небом»</span>
+    <button id="next" type="button" aria-label="Следующая картина"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7.5 4l6 6-6 6"/></svg></button>
+    <span class="screw"></span>
+  </nav>
+</div>
+
+<script>
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
+
+/* ================= painted flow field ================= */
+function Flow(cv, o) {
+  const ctx = cv.getContext("2d");
+  let W = 0, H = 0, parts = [], cur = null, tgt = null;
+  const clone = s => JSON.parse(JSON.stringify(s));
+  function spawn() {
+    return { x: Math.random() * W, y: Math.random() * H, life: 20 + Math.random() * 60,
+      c: o.palette[(Math.random() * o.palette.length) | 0], w: o.wMin + Math.random() * (o.wMax - o.wMin) };
+  }
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    if (!W || !H) return false;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = o.bg; ctx.fillRect(0, 0, W, H);
+    parts = Array.from({ length: Math.round(W * H / o.density) }, spawn);
+    return true;
+  }
+  function abs() {
+    const big = Math.max(W, H), small = Math.min(W, H);
+    return {
+      V: cur.v.map(([x, y, r, s]) => ({ x: x * W, y: y * H, r: r * big, s })),
+      S: (cur.s || []).map(([x, y, r, moon]) => ({ x: x * W, y: y * H, r: moon ? r * small : r, moon })),
+    };
+  }
+  function angle(x, y, V, S) {
+    const a = Math.sin(y * 0.012 + x * 0.004) * o.wave + Math.sin(x * 0.006) * 0.3;
+    let vx = Math.cos(a), vy = Math.sin(a);
+    for (const v of V) {
+      const dx = x - v.x, dy = y - v.y, d2 = dx * dx + dy * dy, d = Math.sqrt(d2 + 1), k = Math.exp(-d2 / (v.r * v.r)) * o.swirl;
+      vx += -dy / d * k * v.s; vy += dx / d * k * v.s;
+    }
+    for (const s of S) {
+      const dx = x - s.x, dy = y - s.y, d = Math.sqrt(dx * dx + dy * dy) + 1, R = s.r * 3.2;
+      if (d < R) { const k = (1 - d / R) * 3; vx += -dy / d * k; vy += dx / d * k; }
+    }
+    return Math.atan2(vy, vx);
+  }
+  function step(V, S) {
+    ctx.lineCap = "round";
+    for (const p of parts) {
+      const a = angle(p.x, p.y, V, S), nx = p.x + Math.cos(a) * o.len, ny = p.y + Math.sin(a) * o.len;
+      let star = null;
+      for (const s of S) if (Math.hypot(p.x - s.x, p.y - s.y) < s.r * 2.4) { star = s; break; }
+      ctx.strokeStyle = star ? o.starPal[(Math.random() * o.starPal.length) | 0] : p.c;
+      ctx.globalAlpha = star ? 0.75 : o.alpha;
+      ctx.lineWidth = p.w;
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(nx, ny); ctx.stroke();
+      p.x = nx; p.y = ny;
+      if (--p.life < 0 || p.x < -10 || p.x > W + 10 || p.y < -10 || p.y > H + 10) Object.assign(p, spawn());
+    }
+    ctx.globalAlpha = 1;
+  }
+  function glow(S) {
+    for (const s of S) {
+      const R = s.r * 1.4, g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, R);
+      g.addColorStop(0, s.moon ? "#fff3b8" : "#fffbe6"); g.addColorStop(.45, s.moon ? "#f4c430" : "#f7e08a"); g.addColorStop(1, "rgba(244,196,48,0)");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(s.x, s.y, R, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+  function lerp() {
+    const k = 0.035;
+    const mix = (a, b) => a.map((row, i) => row.map((v, j) => typeof v === "number" && typeof b[i][j] === "number" ? v + (b[i][j] - v) * k : b[i][j]));
+    cur.v = mix(cur.v, tgt.v); cur.s = mix(cur.s || [], tgt.s || []);
+  }
+  return {
+    setPalette(p, bg) { o.palette = p; if (bg) o.bg = bg; parts.forEach(q => q.c = p[(Math.random() * p.length) | 0]); },
+    scene(s, instant) {
+      tgt = clone(s);
+      if (instant || !cur || cur.v.length !== tgt.v.length || (cur.s || []).length !== (tgt.s || []).length) cur = clone(s);
+    },
+    paint(n) {
+      if (!W && !resize()) return;
+      ctx.fillStyle = o.bg; ctx.fillRect(0, 0, W, H);
+      const { V, S } = abs(); for (let i = 0; i < n; i++) step(V, S); glow(S);
+    },
+    tick() {
+      if (!W) return;
+      lerp();
+      ctx.globalAlpha = o.fade; ctx.fillStyle = o.bg; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1;
+      const { V, S } = abs(); step(V, S); glow(S);
+    },
+    resize,
+  };
+}
+
+/* ================= sky scenes per slide ================= */
+const SMALL_STARS = [[.55, .16, 15], [.74, .72, 13], [.97, .6, 11], [.45, .4, 9], [.3, .12, 9], [.64, .9, 9]];
+const SCENES = [
+  { v: [[.6, .45, .17, 1], [.38, .66, .12, -1], [.9, .3, .1, -1]],  moon: [.82, .24, .1] },
+  { v: [[.25, .5, .18, 1], [.72, .78, .12, -1], [.55, .2, .1, 1]],  moon: [.1, .18, .06] },
+  { v: [[.82, .6, .16, -1], [.3, .32, .14, 1], [.6, .9, .1, 1]],    moon: [.93, .14, .055] },
+  { v: [[.2, .42, .14, 1], [.76, .55, .16, -1], [.5, .2, .1, 1]],   moon: [.5, .1, .07] },
+  { v: [[.74, .44, .2, 1], [.2, .72, .12, -1], [.4, .15, .1, -1]],  moon: [.74, .44, .15] },
+  { v: [[.66, .5, .2, 1], [.2, .3, .12, -1], [.85, .85, .1, 1]],    moon: [.9, .2, .07] },
+].map(s => ({ v: s.v, s: [[...s.moon, true], ...SMALL_STARS.map(r => [...r, false])] }));
+const paintingEl = document.getElementById("painting");
+/* on a tall phone screen keep the moon in the top strip, away from the text */
+function sceneFor(i) {
+  const s = SCENES[i];
+  if (paintingEl.clientHeight <= paintingEl.clientWidth) return s;
+  return { v: s.v, s: s.s.map((st, k) => k === 0 ? [st[0], Math.min(st[1], .1), st[2] * .8, true] : [st[0], st[1] * .5, st[2] * .7, false]) };
+}
+
+const sky = Flow(document.getElementById("sky"), {
+  bg: "#0f1538", palette: ["#1f2d73", "#2b3d8f", "#3a4ea3", "#5b77c9", "#8aa3e0", "#c9d6f5", "#24337f"],
+  starPal: ["#f4c430", "#ffd98a", "#f7e08a", "#e8a92a"],
+  density: 900, wMin: 1.5, wMax: 4.1, len: 5, alpha: .42, wave: .7, swirl: 2.2, fade: .018,
+});
+
+/* ================= signature drinks ================= */
+const DRINKS = [
+  { n: "Латте крем-брюле малина", p: "1 490 ₸", m: "Эспрессо, молоко, крем-брюле, малина. Фарфор.", bg: "#e6c49b", pal: ["#f3e0c4", "#d89a6a", "#c8566e", "#e98fa0", "#fff4e2", "#b97a4a"] },
+  { n: "Смородиновый раф", p: "1 490 ₸", m: "Эспрессо, сливки, чёрная смородина. Фарфор.", bg: "#c3a9d4", pal: ["#e9dcf1", "#8e64a6", "#5b3a73", "#b598c8", "#f6eefa"] },
+  { n: "Клубничный раф", p: "1 690 ₸", m: "Эспрессо, сливки, клубника, взбитые сливки. Фарфор.", bg: "#f2bcc6", pal: ["#ffffff", "#e5677f", "#f8d3da", "#c94a63", "#fde9ed"] },
+  { n: "Имбирный пряник латте", p: "1 490 ₸", m: "Эспрессо, молоко, имбирь, пряные специи. Фарфор.", bg: "#c4935f", pal: ["#e8c79f", "#8a5a33", "#f4e1c6", "#a8723f", "#5e3a1e"] },
+  { n: "Ван Гог кофе", p: "1 790 ₸", m: "Фирменный рецепт бара. Подаётся со льдом.", iced: true, bg: "#24337f", pal: ["#5b77c9", "#8aa3e0", "#1d2a66", "#f4c430", "#c9d6f5", "#3a4ea3"] },
+];
+const cupCanvas = document.getElementById("cupCanvas");
+const cup = Flow(cupCanvas, { bg: DRINKS[0].bg, palette: DRINKS[0].pal, starPal: ["#fff"], density: 160, wMin: 2, wMax: 5, len: 4, alpha: .55, wave: .3, swirl: 3.2, fade: .012 });
+cup.scene({ v: [[.5, .5, .42, 1], [.5, .5, .14, -1]], s: [] }, true);
+let drinkIdx = 0, spin = 0;
+const dPick = document.getElementById("dPick");
+dPick.innerHTML = DRINKS.map((d, i) => `<li><button type="button" data-d="${i}" aria-pressed="${i === 0}">${esc(d.n)}</button></li>`).join("");
+function showDrink(i) {
+  drinkIdx = (i + DRINKS.length) % DRINKS.length;
+  const d = DRINKS[drinkIdx];
+  document.getElementById("dIdx").textContent = String(drinkIdx + 1).padStart(2, "0");
+  document.getElementById("dName").textContent = d.n;
+  document.getElementById("dLabelTitle").innerHTML = `<em>${esc(d.n)}</em>, 2026${d.iced ? '<span class="iced">айс</span>' : ""}`;
+  document.getElementById("dMed").textContent = d.m;
+  document.getElementById("dPrice").textContent = d.p;
+  document.getElementById("dHall").textContent = `Авторский кофе, № ${drinkIdx + 1} из ${DRINKS.length}`;
+  document.querySelectorAll("#dPick button, #dDots button").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.d === drinkIdx)));
+  cup.setPalette(d.pal, d.bg); cup.paint(50);
+  spin += 200; if (!reduce) cupCanvas.style.transform = `rotate(${spin}deg)`;
+}
+dPick.addEventListener("click", e => { const b = e.target.closest("[data-d]"); if (b) showDrink(+b.dataset.d); });
+const dDots = document.getElementById("dDots");
+dDots.innerHTML = DRINKS.map((d, i) => `<button type="button" data-d="${i}" style="--c:${d.bg}" aria-label="${esc(d.n)}" aria-pressed="${i === 0}"></button>`).join("");
+dDots.addEventListener("click", e => { const b = e.target.closest("[data-d]"); if (b) showDrink(+b.dataset.d); });
+document.getElementById("dNext").addEventListener("click", e => { e.stopPropagation(); showDrink(drinkIdx + 1); });
+document.getElementById("dPrev").addEventListener("click", e => { e.stopPropagation(); showDrink(drinkIdx - 1); });
+document.querySelector(".cup-wrap").addEventListener("click", () => showDrink(drinkIdx + 1));
+
+/* ================= menu board ================= */
+const MENU = [
+  { t: "Кофе", items: [["Капучино", "1 090 / 1 290"], ["Латте", "1 090 / 1 290"], ["Американо", "900 / 1 000"], ["Флэт уайт", "1 090"], ["Моккачино", "1 490"], ["Аффогато", "1 490"]] },
+  { t: "Айс кофе", items: [["Айс латте", "1 290", 0, 1], ["Айс американо", "1 000", 0, 1], ["Эспрессо тоник", "1 590", 0, 1], ["Эспрессо тоник", "1 790", "с грейпфрутом", 1], ["Бамбл", "1 690", "апельсин или вишня", 1], ["Банана шейк", "1 690", 0, 1]] },
+  { t: "Авторский кофе", items: [["Латте крем-брюле малина", "1 490"], ["Смородиновый раф", "1 490"], ["Клубничный раф", "1 690", "со взбитыми сливками"], ["Имбирный пряник латте", "1 490"], ["Ван Гог кофе", "1 790", 0, 1]] },
+  { t: "Авторские чаи", items: [["Ван Гог чай", "1 390"], ["Клюква-манго", "1 390"], ["Облепиха-имбирь", "1 390"], ["Ягодный букет", "1 390"], ["Груша-клюква", "1 390"], ["Пряный мандарин", "1 390"], ["Қазақ шай / тары шай", "900"], ["Чай пакетированный", "500"]] },
+  { t: "Матча", items: [["Матча латте", "1 390"], ["Матча тоник", "1 590", 0, 1], ["Матча клубника", "1 690", 0, 1], ["Матча манго", "1 690", 0, 1]] },
+  { t: "Лимонады", items: [["Манго-маракуйя", "1 390", 0, 1], ["Смородина-ананас", "1 390", 0, 1], ["Гранат-клубника", "1 390", 0, 1], ["Цитрусовый микс", "1 390", 0, 1]] },
+  { t: "Не кофе", items: [["Какао", "1 090"], ["Горячий шоколад", "1 090"], ["Безалкогольный глинтвейн", "1 390"]] },
+  { t: "Милкшейки", items: [["Банановый", "1 890", 0, 1], ["Клубничный", "1 890", 0, 1], ["Ванильный", "1 890", 0, 1], ["Орео", "1 890", 0, 1]] },
+  { t: "Добавки", note: "Добавляем к любому напитку. Цены в тенге.", items: [["Альтернативное молоко", "450"], ["Сироп в ассортименте", "200"], ["Шот эспрессо", "250"], ["Декаф", "350"], ["Мёд", "200"]] },
+];
+const cats = document.getElementById("cats");
+cats.insertAdjacentHTML("beforeend", MENU.map((c, i) => `<button type="button" data-c="${i}" aria-pressed="${i === 0}">${esc(c.t)}</button>`).join(""));
+function showCat(i) {
+  const c = MENU[i];
+  cats.querySelectorAll("button").forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
+  document.getElementById("catTitle").textContent = c.t;
+  document.getElementById("catNote").textContent = c.note || "Цены в тенге. Через дробь — маленький и большой объём. «Айс» — подаём со льдом.";
+  const ul = document.getElementById("items");
+  ul.innerHTML = c.items.map(([n, p, note, iced], k) =>
+    `<li style="--i:${k}"><span class="n">${esc(n)}${iced ? '<span class="iced">айс</span>' : ""}${note ? `<small>${esc(note)}</small>` : ""}</span><span class="dots"></span><span class="p">${esc(p).replace(" / ", ' <s>/</s> ')}<span class="cur">₸</span></span></li>`).join("");
+  ul.scrollTop = 0;
+}
+cats.addEventListener("click", e => {
+  const b = e.target.closest("[data-c]"); if (!b) return;
+  showCat(+b.dataset.c);
+  b.scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduce ? "auto" : "smooth" });
+});
+showCat(0);
+
+/* ================= garland ================= */
+const garland = document.getElementById("garland");
+function buildGarland() {
+  garland.innerHTML = "";
+  const w = garland.clientWidth, h = garland.clientHeight;
+  if (!w || !h) return;
+  const gap = w < 600 ? 30 : 40, n = Math.ceil(w / gap);
+  let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < n; i++) {
+    const x = i * gap + rnd() * 10, len = h * (0.3 + rnd() * 0.7);
+    const s = document.createElement("div"); s.className = "str"; s.style.left = x + "px"; s.style.height = len + "px"; frag.appendChild(s);
+    for (let y = 14 + rnd() * 20; y < len; y += 30 + rnd() * 14) {
+      const b = document.createElement("i"); b.className = "b";
+      b.style.left = x + "px"; b.style.top = y + "px";
+      b.style.setProperty("--d", (3 + rnd() * 4).toFixed(2) + "s");
+      b.style.setProperty("--delay", (-rnd() * 6).toFixed(2) + "s");
+      b.style.opacity = (0.5 + (1 - y / len) * 0.5).toFixed(2);
+      frag.appendChild(b);
+    }
+  }
+  garland.appendChild(frag);
+}
+
+/* ================= slideshow ================= */
+const slides = [...document.querySelectorAll(".slide")];
+const dotsNav = document.getElementById("dotsNav");
+dotsNav.innerHTML = slides.map((s, i) => `<li><button type="button" data-go="${i}" aria-current="${i === 0}" aria-label="${esc(s.dataset.name)}">${esc(s.dataset.name)}</button></li>`).join("");
+let at = 0, lock = 0;
+function go(i, instant) {
+  i = Math.max(0, Math.min(slides.length - 1, i));
+  if (i === at && !instant) return;
+  at = i;
+  slides.forEach((s, j) => { s.classList.toggle("on", j === i); s.setAttribute("aria-hidden", String(j !== i)); s.inert = j !== i; });
+  dotsNav.querySelectorAll("button").forEach((b, j) => b.setAttribute("aria-current", String(j === i)));
+  document.getElementById("plaqueTitle").innerHTML = `<b>${ROMAN[i]}</b>«${esc(slides[i].dataset.work)}»`;
+  document.getElementById("prev").disabled = i === 0;
+  document.getElementById("next").disabled = i === slides.length - 1;
+  sky.scene(sceneFor(i), reduce);
+  if (reduce) sky.paint(70);
+  if (slides[i].dataset.id === "drinks") { cup.resize(); cup.paint(60); }
+  if (slides[i].dataset.id === "hall") buildGarland();
+  try { history.replaceState(null, "", "#" + slides[i].dataset.id); } catch (e) {}
+  lock = performance.now();
+}
+document.getElementById("prev").onclick = () => go(at - 1);
+document.getElementById("next").onclick = () => go(at + 1);
+document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) { e.preventDefault(); go(+b.dataset.go); } });
+
+function scrollableAncestor(el, dir) {
+  for (; el && el !== document.body; el = el.parentElement) {
+    if (el.scrollHeight > el.clientHeight + 2 && /(auto|scroll)/.test(getComputedStyle(el).overflowY)) {
+      if (dir > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 2) return el;
+      if (dir < 0 && el.scrollTop > 2) return el;
+    }
+  }
+  return null;
+}
+let acc = 0, accT = 0;
+addEventListener("wheel", e => {
+  const vertical = Math.abs(e.deltaY) >= Math.abs(e.deltaX), d = vertical ? e.deltaY : e.deltaX;
+  if (vertical && scrollableAncestor(e.target, Math.sign(d))) return;
+  e.preventDefault();
+  const now = performance.now();
+  if (now - lock < 900) return;
+  if (now - accT > 250) acc = 0;
+  acc += d; accT = now;
+  if (Math.abs(acc) > 60) { go(at + Math.sign(acc)); acc = 0; }
+}, { passive: false });
+addEventListener("keydown", e => {
+  if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); go(at + 1); }
+  else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); go(at - 1); }
+  else if (e.key === "Home") go(0);
+  else if (e.key === "End") go(slides.length - 1);
+});
+let tx = 0, ty = 0, tEl = null;
+addEventListener("touchstart", e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; tEl = e.target; }, { passive: true });
+addEventListener("touchend", e => {
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+  const inside = sel => tEl && tEl.closest && tEl.closest(sel);
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+    if (inside(".cats")) return;
+    if (inside(".cup-wrap")) { showDrink(drinkIdx + (dx < 0 ? 1 : -1)); return; }
+    go(at + (dx < 0 ? 1 : -1));
+  } else if (Math.abs(dy) > 60 && Math.abs(dy) > Math.abs(dx) * 1.2) {
+    if (!scrollableAncestor(tEl, dy < 0 ? 1 : -1)) go(at + (dy < 0 ? 1 : -1));
+  }
+}, { passive: true });
+
+/* ================= status & phone ================= */
+(function status() {
+  const now = new Date(), m = ((now.getUTCHours() + 5) % 24) * 60 + now.getUTCMinutes();
+  const open = m >= 480 && m < 1320, el = document.getElementById("status");
+  el.classList.toggle("open", open);
+  el.querySelector("span").textContent = open ? "Открыто до 22:00" : "Откроемся в 8:00";
+})();
+document.getElementById("copyPhone").addEventListener("click", e => {
+  const btn = e.currentTarget, el = document.getElementById("phone");
+  const done = () => { btn.textContent = "скопировано"; setTimeout(() => btn.textContent = "копировать", 1600); };
+  const select = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+  try { navigator.clipboard.writeText(el.textContent).then(done, select); } catch (err) { select(); }
+});
+
+/* ================= boot ================= */
+const start = Math.max(0, slides.findIndex(s => "#" + s.dataset.id === location.hash));
+sky.resize(); sky.scene(sceneFor(start), true); sky.paint(70);
+showDrink(0); cup.resize(); cup.paint(60);
+go(start, true);
+let raf;
+function loop() {
+  sky.tick();
+  if (slides[at].dataset.id === "drinks") cup.tick();
+  raf = requestAnimationFrame(loop);
+}
+if (!reduce) raf = requestAnimationFrame(loop);
+document.addEventListener("visibilitychange", () => { cancelAnimationFrame(raf); if (!document.hidden && !reduce) raf = requestAnimationFrame(loop); });
+let rt; addEventListener("resize", () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => { sky.resize(); sky.scene(sceneFor(at), true); sky.paint(70); cup.resize(); cup.paint(60); if (slides[at].dataset.id === "hall") buildGarland(); }, 200);
+});
+</script>
+
+</body>
+</html>
