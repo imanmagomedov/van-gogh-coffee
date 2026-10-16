@@ -208,10 +208,10 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 400; line-height: 1.02;
 }
 .mega { font-size: clamp(72px, min(17vw, 25vh), 280px); line-height: .8; letter-spacing: -.02em; }
 .mega .g { color: transparent; -webkit-text-stroke: 1.5px var(--chalk); }
-.hero-word .hand { position: absolute; font-size: clamp(28px, min(4.2vw, 6.6vh), 64px); transform: rotate(-6deg); left: clamp(130px, min(28vw, 44vh), 450px); bottom: clamp(64px, min(9.6vw, 14.5vh), 145px); white-space: nowrap; }
+.hero-word .hand { margin: .2em 0 0 clamp(0px, 5vw, 110px); max-width: 100%; font-size: clamp(28px, min(4vw, 6.2vh), 60px); transform: rotate(-5deg); transform-origin: left; }
 .hero-foot { display: grid; justify-items: end; gap: 16px; }
 .hero-foot .label { order: -1; max-width: 340px; }
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .s-hero .inner { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
   .hero-foot { justify-items: stretch; }
   .hero-foot .label { max-width: 420px; }
